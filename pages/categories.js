@@ -25,14 +25,15 @@ function Categories( {swal} ){
     }
 
     async function saveCategory(ev){
+        let propArray = properties.map(p=> ({
+            name: p.name, values:
+            p.values.split(',')
+        })) 
         const data = {
             name, 
             parentCategory,
             images, 
-            properties: properties.map(p=> ({
-                name: p.name, values:
-                p.values.split(','),
-            }))
+            properties: propArray
         }
         ev.preventDefault();
         if(editedCategory){
@@ -55,7 +56,6 @@ function Categories( {swal} ){
         if(files?.length > 0){
             setIsUploading(true);
             const data = new FormData();
-
             for(const file of files){
                 data.append('file', file);
             }
@@ -72,7 +72,7 @@ function Categories( {swal} ){
         setImages(images);
     }
     async function editCategory(category){
-        console.log(category)
+        setImages(category.images);
         setEditedCategory(category);
         setName(category.name);
         setParentCategory(category.parent?._id)
@@ -229,6 +229,7 @@ function Categories( {swal} ){
                                     setEditedCategory(null);
                                     setName('');
                                     setParentCategory('');
+                                    setImages('');
                                 }}
                                 className="btn-default"
                             >
